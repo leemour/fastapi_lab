@@ -156,3 +156,47 @@ tasks:
     aliases: [rl]
     cmds:
       - "{{.UV}} invoke routes.list-routes"
+
+  openapi-export:
+    desc: Export OpenAPI schema to JSON
+    aliases: [oe]
+    cmds:
+      - "{{.UV}} invoke openapi.export"
+
+  openapi-view:
+    desc: View OpenAPI schema
+    aliases: [ov]
+    cmds:
+      - "{{.UV}} invoke openapi.view"
+
+  openapi-docs:
+    desc: Open API documentation in browser
+    aliases: [od]
+    cmds:
+      - "{{.UV}} invoke openapi.docs"
+
+  # Console & Shell tasks
+  console:local:
+    desc: Open local Python console with app context loaded (like Rails console)
+    aliases: [c]
+    env:
+      PYTHONPATH: src
+    cmds:
+      - "{{.UV}} python scripts/console.py"
+
+  # Docker tasks
+  shell:
+    desc: Open shell in the app container
+    aliases: [dsh]
+    env:
+      PYTHONPATH: /app:/app/src
+    cmds:
+      - docker compose run --rm -it app sh
+
+  console:
+    desc: Open Python console in Docker container
+    aliases: [dc]
+    env:
+      PYTHONPATH: /app:/app/src
+    cmds:
+      - docker compose run --rm -it app uv run python scripts/console.py

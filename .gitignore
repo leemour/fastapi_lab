@@ -215,4 +215,38 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# Docker
+docker-compose.override.local.yml
+.docker/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Local environment overrides
+.env.local
+.env.*.local
+!.env.example
+
+# IDE specific
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Operating System
+Thumbs.db
+
+# Backup files
+*.bak
+*.tmp
+*.temp
+
+# Logs
+logs/
+*.log.*
+
+# Misc
 /misc
