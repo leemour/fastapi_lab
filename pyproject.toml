@@ -1,0 +1,92 @@
+[project]
+name = "lab"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.128.2",
+    "invoke>=2.2.1",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "python-dotenv>=1.2.1",
+    "uvicorn[standard]>=0.40.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+    "pytest-describe>=2.2.0",      # BDD-style describe/context blocks
+    "pytest-sugar>=1.0.0",          # Better output with progress bar
+    "pytest-xdist>=3.5.0",          # Parallel test execution
+    "pytest-cov>=4.1.0",            # Code coverage
+    "pytest-asyncio>=0.23.0",       # Async test support for FastAPI
+    "pytest-mock>=3.12.0",          # Mocking utilities
+    "httpx>=0.27.0",                # Test client for FastAPI
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*", "Describe*"]
+python_functions = ["test_*", "it_*"]
+addopts = [
+    "-ra",                          # Show all test outcomes
+    "--strict-markers",             # Ensure markers are defined
+    "--strict-config",              # Ensure config is valid
+    "--showlocals",                 # Show local variables in tracebacks
+    "-v",                           # Verbose output
+    "--tb=short",                   # Shorter traceback format
+    "--cov=.",                      # Coverage for current directory
+    "--cov-report=term-missing",    # Show missing lines in coverage
+    "--cov-report=html",            # Generate HTML coverage report
+    "--cov-fail-under=80",          # Fail if coverage is below 80%
+]
+asyncio_mode = "auto"               # Automatically detect async tests
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "mypy>=1.19.1",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "ruff>=0.15.0",
+]
+
+[tool.ruff]
+line-length = 110
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.14"
+warn_unused_configs = true
+ignore_missing_imports = true
