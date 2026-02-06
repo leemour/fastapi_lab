@@ -170,11 +170,11 @@ git push origin feature/my-new-feature
 1. **Create the schema** (`src/schemas/user.py`)
    ```python
    from pydantic import BaseModel, Field
-   
+
    class UserCreate(BaseModel):
        email: str
        username: str = Field(..., min_length=3)
-   
+
    class UserResponse(BaseModel):
        id: int
        email: str
@@ -185,9 +185,9 @@ git push origin feature/my-new-feature
    ```python
    from fastapi import APIRouter, Depends
    from src.core.auth import require_api_key
-   
+
    router = APIRouter()
-   
+
    @router.post("/users", dependencies=[Depends(require_api_key)])
    def create_user(user: UserCreate):
        return {"message": "User created"}
@@ -196,7 +196,7 @@ git push origin feature/my-new-feature
 3. **Register the router** (`src/api/v1/router.py`)
    ```python
    from src.api.v1 import users
-   
+
    api_router.include_router(users.router, tags=["users"])
    ```
 
@@ -263,15 +263,15 @@ We use `pytest-describe` for BDD-style testing.
 ```python
 def describe_endpoint():
     """Top-level describe block."""
-    
+
     def it_does_something(client):
         """Test case with descriptive name."""
         # Arrange
         data = {"key": "value"}
-        
+
         # Act
         response = client.post("/endpoint", json=data)
-        
+
         # Assert
         assert response.status_code == 200
         assert response.json()["key"] == "value"
@@ -281,15 +281,15 @@ def describe_endpoint():
 
 ```python
 def describe_items_api():
-    
+
     def describe_get_items():
         """GET /items tests."""
-        
+
         def it_returns_list_of_items(client):
             response = client.get("/items")
             assert response.status_code == 200
             assert isinstance(response.json(), list)
-        
+
         def it_filters_by_query_parameter(client):
             response = client.get("/items?category=electronics")
             assert response.status_code == 200

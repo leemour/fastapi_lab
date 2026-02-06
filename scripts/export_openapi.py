@@ -5,11 +5,11 @@ import os
 import sys
 from pathlib import Path
 
+from main import app
+
 # Add project root to Python path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
-
-from main import app
 
 
 def export_openapi(output_path: str = "docs/openapi.json"):

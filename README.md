@@ -42,6 +42,13 @@ A production-ready FastAPI project template with comprehensive testing, Docker s
 - **Auto-generated docs** - OpenAPI/Swagger UI and ReDoc
 - **Hot reload** - Automatic server restart on code changes
 
+### Automation Models (NEW!)
+- **Webhook Inbox** - Universal webhook receiver for testing integrations
+- **Scheduled Tasks** - Task scheduling with execution tracking
+- **Workflows** - Multi-step automation pipelines
+- **API Logs** - Request/response logging and analytics
+- **SQLModel** - Modern ORM combining SQLAlchemy + Pydantic
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -81,6 +88,88 @@ The API will be available at:
 - **ReDoc**: http://localhost:8000/redoc
 - **OpenAPI JSON**: http://localhost:8000/openapi.json
 
+## 🤖 Automation Models
+
+This project includes comprehensive automation models for testing typical automation tasks:
+
+### Quick Setup
+```bash
+# Setup automation models (install deps, start DB, create tables)
+./scripts/setup_automation.sh
+
+# Test the endpoints
+./scripts/test_automation.sh
+```
+
+### Available Models
+
+#### 🪝 Webhook Inbox
+Universal webhook receiver for testing integrations.
+
+```bash
+# Receive a webhook
+curl -X POST http://localhost:8000/v1/webhooks/inbox/github \
+  -H "Content-Type: application/json" \
+  -d '{"event": "push", "repo": "my-repo"}'
+
+# List webhooks
+curl http://localhost:8000/v1/webhooks/inbox
+```
+
+**Use cases**: Testing webhooks, debugging payloads, building webhook-triggered automations
+
+#### ⏰ Scheduled Tasks
+Task scheduling system with execution tracking.
+
+```bash
+# Create a task
+curl -X POST http://localhost:8000/v1/tasks \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Daily Backup",
+    "task_type": "cron",
+    "schedule": "0 2 * * *",
+    "enabled": true,
+    "config": {}
+  }'
+```
+
+**Use cases**: Cron-like scheduled jobs, recurring API calls, periodic data sync
+
+#### 🔄 Workflows
+Multi-step automation pipelines with step execution.
+
+```bash
+# Create a workflow
+curl -X POST http://localhost:8000/v1/workflows \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "User Onboarding",
+    "trigger_type": "webhook",
+    "steps": [
+      {"type": "email", "config": {"template": "welcome"}},
+      {"type": "api_call", "config": {"url": "https://api.example.com/setup"}}
+    ]
+  }'
+```
+
+**Use cases**: Complex automation pipelines, event-driven workflows, integration orchestration
+
+#### 📊 API Logs
+Request/response logging and analytics.
+
+```bash
+# Get API statistics
+curl http://localhost:8000/v1/api-logs/stats/summary
+
+# List recent logs
+curl http://localhost:8000/v1/api-logs
+```
+
+**Use cases**: API monitoring, performance analysis, audit trails
+
+📖 **Full documentation**: See [AUTOMATION_SUMMARY.md](./AUTOMATION_SUMMARY.md) and [docs/AUTOMATION_MODELS.md](./docs/AUTOMATION_MODELS.md)
+
 ## 📁 Project Structure
 
 ```
@@ -91,18 +180,26 @@ fastapi_lab/
 │   │       ├── health.py  # Health check endpoint
 │   │       ├── items.py   # Example items endpoints
 │   │       ├── examples.py # Example endpoints for testing
+│   │       ├── webhooks.py # Webhook inbox endpoints
+│   │       ├── tasks.py   # Scheduled tasks endpoints
+│   │       ├── workflows.py # Workflow automation endpoints
+│   │       ├── api_logs.py # API logging endpoints
 │   │       └── router.py  # Main API router
 │   ├── core/             # Core functionality
 │   │   ├── auth.py       # Authentication (API key)
 │   │   ├── config.py     # Configuration management
 │   │   ├── logging.py    # Structured logging setup
 │   │   └── exception_handlers.py # Global exception handlers
+│   ├── db/               # Database configuration
+│   │   └── base.py       # SQLModel setup & session management
+│   ├── models/           # SQLModel models (ORM + schemas)
+│   │   ├── webhook.py    # Webhook inbox models
+│   │   ├── task.py       # Task scheduling models
+│   │   ├── workflow.py   # Workflow automation models
+│   │   └── api_log.py    # API logging models
 │   ├── middleware/       # Custom middleware
 │   │   ├── correlation.py # Correlation ID tracking
 │   │   └── request_logging.py # Request/response logging
-│   ├── db/               # Database models & sessions (ready for integration)
-│   ├── models/           # Business models
-│   ├── schemas/          # Pydantic schemas
 │   └── services/         # Business logic
 ├── tests/                # Test suite
 │   ├── unit/            # Unit tests
@@ -285,16 +382,16 @@ We use `pytest-describe` for BDD-style testing:
 
 def describe_user_api():
     """Test suite for user API."""
-    
+
     def describe_get_users():
         """Tests for GET /users endpoint."""
-        
+
         def it_returns_list_of_users(client):
             """Should return a list of users."""
             response = client.get("/v1/users")
             assert response.status_code == 200
             assert isinstance(response.json(), list)
-        
+
         def it_filters_by_query_params(client):
             """Should filter users by query parameters."""
             response = client.get("/v1/users?is_active=true")

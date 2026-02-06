@@ -1,20 +1,33 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
-from starlette.exceptions import HTTPException as StarletteHTTPException
-
 from src.api.v1.router import api_router
 from src.core.config import settings
-from src.core.exception_handlers import (general_exception_handler, http_exception_handler,
-                                         starlette_exception_handler, validation_exception_handler)
+from src.core.exception_handlers import (
+    general_exception_handler,
+    http_exception_handler,
+    starlette_exception_handler,
+    validation_exception_handler,
+)
 from src.core.logging import get_logger, setup_logging
+from src.db import init_db
 from src.middleware.correlation import CorrelationMiddleware
 from src.middleware.request_logging import RequestLoggingMiddleware
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 setup_logging()
 logger = get_logger()
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database on startup."""
+    logger.info("Initializing database")
+    await init_db()
+    logger.info("Database initialized successfully")
+
 
 app.add_middleware(RequestLoggingMiddleware)
 app.add_middleware(CorrelationMiddleware)
@@ -77,7 +90,7 @@ if __name__ == "__main__":
 
     uvicorn.run(
         app,
-        host="0.0.0.0",
+        host="0.0.0.0",  # nosec B104 - Binding to all interfaces is intentional for Docker
         port=8000,
         log_config=log_config,
         access_log=False,  # Disable access logs completely

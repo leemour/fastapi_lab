@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+
 from src.core.auth import require_api_key
 
 router = APIRouter()

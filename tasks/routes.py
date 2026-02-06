@@ -8,14 +8,12 @@ def list(c):
     """List all registered API routes."""
     print("📋 Listing all FastAPI routes...")
     c.run(
-        (
-            "uv run python -c \""
-            "from main import app; "
-            "from fastapi.routing import APIRoute; "
-            "routes = [route for route in app.routes if isinstance(route, APIRoute)]; "
-            "[print(f'{route.methods} {route.path}') for route in routes]"
-            "\""
-        )
+        'uv run python -c "'
+        "from main import app; "
+        "from fastapi.routing import APIRoute; "
+        "routes = [route for route in app.routes if isinstance(route, APIRoute)]; "
+        "[print(f'{route.methods} {route.path}') for route in routes]"
+        '"'
     )
 
 
@@ -64,21 +62,15 @@ def create_{name.rstrip('s')}(item: dict):
 
     print(f"✅ Created {route_file}")
     print("\n📝 Next steps:")
-    print(
-        f"   1. Add 'from src.api.{prefix} import {name}' to src/api/{prefix}/router.py"
-    )
-    print(
-        f"   2. Add 'api_router.include_router({name}.router, tags=[\"{name}\"])' to the router"
-    )
+    print(f"   1. Add 'from src.api.{prefix} import {name}' to src/api/{prefix}/router.py")
+    print(f"   2. Add 'api_router.include_router({name}.router, tags=[\"{name}\"])' to the router")
 
 
 @task
 def openapi(c):
     """Display the OpenAPI schema."""
     print("📜 Generating OpenAPI schema...")
-    c.run(
-        'uv run python -c "from main import app; import json; print(json.dumps(app.openapi(), indent=2))"'
-    )
+    c.run('uv run python -c "from main import app; import json; print(json.dumps(app.openapi(), indent=2))"')
 
 
 @task

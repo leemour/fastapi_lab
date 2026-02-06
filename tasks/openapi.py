@@ -12,7 +12,7 @@ def export(c, output="docs/openapi.json"):
         output: Path where the OpenAPI JSON will be saved (default: docs/openapi.json)
     """
     print(f"📜 Exporting OpenAPI schema to {output}...")
-    
+
     # Run the export script with the output path as environment variable
     c.run(f'OUTPUT_PATH="{output}" uv run python scripts/export_openapi.py')
 
@@ -21,9 +21,7 @@ def export(c, output="docs/openapi.json"):
 def view(c):
     """Display the OpenAPI schema."""
     print("📜 Generating OpenAPI schema...")
-    c.run(
-        'uv run python -c "from main import app; import json; print(json.dumps(app.openapi(), indent=2))"'
-    )
+    c.run('uv run python -c "from main import app; import json; print(json.dumps(app.openapi(), indent=2))"')
 
 
 @task

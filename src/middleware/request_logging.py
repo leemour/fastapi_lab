@@ -1,5 +1,5 @@
 import time
-from typing import Callable
+from collections.abc import Callable
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -36,10 +36,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         }
         request_data["headers_info"] = important_headers
 
-        logger.info(
-            "👉 Request started",
-            **request_data
-        )
+        logger.info("👉 Request started", **request_data)
 
         try:
             response = await call_next(request)

@@ -33,18 +33,16 @@ def describe_item_model():
 
         def it_rejects_missing_required_fields():
             """It should reject items missing required fields."""
-            from pydantic import ValidationError
-
             from main import Item
+            from pydantic import ValidationError
 
             with pytest.raises(ValidationError):
                 Item(name="Widget")  # Missing price
 
         def it_rejects_invalid_price_type():
             """It should reject invalid price types."""
-            from pydantic import ValidationError
-
             from main import Item
+            from pydantic import ValidationError
 
             with pytest.raises(ValidationError):
                 Item(name="Widget", price="invalid")

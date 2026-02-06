@@ -86,7 +86,7 @@ async def trigger_exception():
 
     try:
         result = 10 / 0
-    except ZeroDivisionError as e:
+    except ZeroDivisionError:
         logger.exception("Division by zero occurred")
         raise
 

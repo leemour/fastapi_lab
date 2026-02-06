@@ -31,7 +31,9 @@ def serialize_record(record: dict) -> str:
         subset["exception"] = {
             "type": exc_info.type.__name__,
             "value": str(exc_info.value),
-            "traceback": "".join(traceback.format_exception(exc_info.type, exc_info.value, exc_info.traceback))
+            "traceback": "".join(
+                traceback.format_exception(exc_info.type, exc_info.value, exc_info.traceback)
+            ),
         }
 
     if record.get("extra"):
@@ -87,7 +89,9 @@ def setup_logging() -> None:
             backtrace=True,
             diagnose=False,
         )
-        logger = logger.patch(lambda record: record.update({"extra": {"serialized": serialize_record(record)}}))
+        logger = logger.patch(
+            lambda record: record.update({"extra": {"serialized": serialize_record(record)}})
+        )
     else:
         logger.add(
             sys.stdout,

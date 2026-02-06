@@ -1,10 +1,7 @@
 {
-  // Python linting - use Ruff instead of flake8
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": false,
   "python.linting.pylintEnabled": false,
-  
-  // Enable Ruff extension
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
@@ -13,18 +10,12 @@
       "source.organizeImports": "explicit"
     }
   },
-  
-  // Ruff settings
   "ruff.enable": true,
   "ruff.lint.enable": true,
   "ruff.format.enable": true,
   "ruff.organizeImports": true,
-  
-  // Python path
   "python.analysis.extraPaths": [
     "${workspaceFolder}/src"
   ],
-  
-  // Type checking
   "python.analysis.typeCheckingMode": "basic"
 }

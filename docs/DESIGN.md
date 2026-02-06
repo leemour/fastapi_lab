@@ -307,7 +307,7 @@ Always document endpoints comprehensively:
 async def create_user(user: UserCreate):
     """
     Create a new user with the following information:
-    
+
     - **email**: A valid email address (required)
     - **username**: 3-50 characters (required)
     - **full_name**: User's full name (optional)

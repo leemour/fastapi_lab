@@ -8,17 +8,17 @@ services:
       target: development  # Use development stage instead of production
     volumes:
       # Mount source code for hot reload
-      - ./main.py:/app/main.py
-      - ./src:/app/src
-      - ./tests:/app/tests
-      - ./scripts:/app/scripts
+    - ./main.py:/app/main.py
+    - ./src:/app/src
+    - ./tests:/app/tests
+    - ./scripts:/app/scripts
       # Preserve UV cache
-      - uv_cache:/root/.cache/uv
+    - uv_cache:/root/.cache/uv
     environment:
       ENVIRONMENT: development
-      DEBUG: "true"
+      DEBUG: 'true'
       LOG_LEVEL: DEBUG
-    command: ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "src", "--reload-dir", "."]
+    command: [uv, run, uvicorn, main:app, --host, 0.0.0.0, --port, '8000', --reload, --reload-dir, src, --reload-dir, .]
     stdin_open: true
     tty: true
 
@@ -32,13 +32,13 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
+    - ${PGADMIN_PORT:-5050}:80
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+    - pgadmin_data:/var/lib/pgadmin
     depends_on:
-      - postgres
+    - postgres
     networks:
-      - fastapi_network
+    - fastapi_network
     restart: unless-stopped
 
   # Redis Commander for Redis management
@@ -48,12 +48,12 @@ services:
     environment:
       REDIS_HOSTS: local:fastapi_lab_redis:6379:0:${REDIS_PASSWORD:-redis}
     ports:
-      - "${REDIS_COMMANDER_PORT:-8081}:8081"
+    - ${REDIS_COMMANDER_PORT:-8081}:8081
     depends_on:
       redis:
         condition: service_healthy
     networks:
-      - fastapi_network
+    - fastapi_network
     restart: unless-stopped
 
   # MailHog for email testing
@@ -61,10 +61,10 @@ services:
     image: mailhog/mailhog:latest
     container_name: fastapi_lab_mailhog
     ports:
-      - "${MAILHOG_SMTP_PORT:-1025}:1025"  # SMTP server
-      - "${MAILHOG_WEB_PORT:-8025}:8025"   # Web UI
+    - ${MAILHOG_SMTP_PORT:-1025}:1025      # SMTP server
+    - ${MAILHOG_WEB_PORT:-8025}:8025       # Web UI
     networks:
-      - fastapi_network
+    - fastapi_network
     restart: unless-stopped
 
 volumes:

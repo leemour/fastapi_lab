@@ -11,79 +11,79 @@ tasks:
   default:
     desc: Show available tasks
     cmds:
-      - task --list
+    - task --list
 
   install:
     desc: Install all dependencies
     cmds:
-      - uv sync --extra test
+    - uv sync --extra test
 
   test:
     desc: Run all tests
     cmds:
-      - "{{.UV}} pytest"
+    - '{{.UV}} pytest'
 
   test-parallel:
     desc: Run tests in parallel
     aliases: [tp]
     cmds:
-      - "{{.UV}} pytest -n auto"
+    - '{{.UV}} pytest -n auto'
 
   test-cov:
     desc: Run tests with coverage report
     aliases: [cov]
     cmds:
-      - "{{.UV}} pytest --cov=. --cov-report=html --cov-report=term-missing"
-      - echo "Coverage report generated in htmlcov/index.html"
+    - '{{.UV}} pytest --cov=. --cov-report=html --cov-report=term-missing'
+    - echo "Coverage report generated in htmlcov/index.html"
 
   test-unit:
     desc: Run only unit tests
     cmds:
-      - "{{.UV}} pytest -m unit"
+    - '{{.UV}} pytest -m unit'
 
   test-integration:
     desc: Run only integration tests
     cmds:
-      - "{{.UV}} pytest -m integration"
+    - '{{.UV}} pytest -m integration'
 
   test-watch:
     desc: Run tests in watch mode
     aliases: [tw]
     cmds:
-      - "{{.UV}} pytest-watch"
+    - '{{.UV}} pytest-watch'
 
   test-fast:
     desc: Fast fail mode (stop on first failure)
     aliases: [tf]
     cmds:
-      - "{{.UV}} pytest -x -v --ff"
+    - '{{.UV}} pytest -x -v --ff'
 
   test-verbose:
     desc: Run tests with verbose output
     aliases: [tv]
     cmds:
-      - "{{.UV}} pytest -vv"
+    - '{{.UV}} pytest -vv'
 
   test-debug:
     desc: Run tests with debugging enabled
     cmds:
-      - "{{.UV}} pytest -s -vv --pdb"
+    - '{{.UV}} pytest -s -vv --pdb'
 
   clean:
     desc: Remove generated files
     cmds:
-      - rm -rf .pytest_cache
-      - rm -rf htmlcov
-      - rm -rf .coverage
-      - rm -rf **/__pycache__
-      - rm -rf **/*.pyc
+    - rm -rf .pytest_cache
+    - rm -rf htmlcov
+    - rm -rf .coverage
+    - rm -rf **/__pycache__
+    - rm -rf **/*.pyc
 
   run:
     desc: Run the FastAPI application
     env:
       PYTHONPATH: src
     cmds:
-      - "{{.UV}} python main.py"
+    - '{{.UV}} python main.py'
 
   run-dev:
     desc: Run with auto-reload (development mode)
@@ -91,89 +91,89 @@ tasks:
     env:
       PYTHONPATH: src
     cmds:
-      - "{{.UV}} uvicorn main:app --reload"
+    - '{{.UV}} uvicorn main:app --reload'
 
   lint:
     desc: Run linter (ruff check)
     cmds:
-      - "{{.UV}} ruff check ."
+    - '{{.UV}} ruff check .'
 
   lint-fix:
     desc: Run linter and fix issues
     cmds:
-      - "{{.UV}} ruff check --fix ."
+    - '{{.UV}} ruff check --fix .'
 
   format:
     desc: Format code with ruff
     cmds:
-      - "{{.UV}} ruff format ."
+    - '{{.UV}} ruff format .'
 
   format-check:
     desc: Check code formatting without making changes
     cmds:
-      - "{{.UV}} ruff format --check ."
+    - '{{.UV}} ruff format --check .'
 
   check:
     desc: Run all checks (lint + format + test)
     cmds:
-      - task: lint
-      - task: format-check
-      - task: test
+    - task: lint
+    - task: format-check
+    - task: test
 
   ci:
     desc: Run CI pipeline (lint, format check, tests with coverage)
     cmds:
-      - task: lint
-      - task: format-check
-      - task: test-parallel
-      - task: test-cov
+    - task: lint
+    - task: format-check
+    - task: test-parallel
+    - task: test-cov
 
   setup:
     desc: Initial setup (install + show help)
     cmds:
-      - task: install
-      - task: default
+    - task: install
+    - task: default
 
   inv:
-    desc: "Run invoke tasks (usage: task inv -- routes.list-routes)"
+    desc: 'Run invoke tasks (usage: task inv -- routes.list-routes)'
     cmds:
-      - "{{.UV}} invoke {{.CLI_ARGS}}"
+    - '{{.UV}} invoke {{.CLI_ARGS}}'
 
   inv-list:
     desc: List all invoke tasks
     aliases: [il]
     cmds:
-      - "{{.UV}} invoke --list"
+    - '{{.UV}} invoke --list'
 
   route-create:
-    desc: "Create new API route (usage: task route-create -- --name=users)"
+    desc: 'Create new API route (usage: task route-create -- --name=users)'
     aliases: [rc]
     cmds:
-      - "{{.UV}} invoke routes.create {{.CLI_ARGS}}"
+    - '{{.UV}} invoke routes.create {{.CLI_ARGS}}'
 
   route-list:
     desc: List all registered API routes
     aliases: [rl]
     cmds:
-      - "{{.UV}} invoke routes.list-routes"
+    - '{{.UV}} invoke routes.list-routes'
 
   openapi-export:
     desc: Export OpenAPI schema to JSON
     aliases: [oe]
     cmds:
-      - "{{.UV}} invoke openapi.export"
+    - '{{.UV}} invoke openapi.export'
 
   openapi-view:
     desc: View OpenAPI schema
     aliases: [ov]
     cmds:
-      - "{{.UV}} invoke openapi.view"
+    - '{{.UV}} invoke openapi.view'
 
   openapi-docs:
     desc: Open API documentation in browser
     aliases: [od]
     cmds:
-      - "{{.UV}} invoke openapi.docs"
+    - '{{.UV}} invoke openapi.docs'
 
   # Console & Shell tasks
   console:local:
@@ -182,7 +182,7 @@ tasks:
     env:
       PYTHONPATH: src
     cmds:
-      - "{{.UV}} python scripts/console.py"
+    - '{{.UV}} python scripts/console.py'
 
   # Docker tasks
   shell:
@@ -191,7 +191,7 @@ tasks:
     env:
       PYTHONPATH: /app:/app/src
     cmds:
-      - docker compose run --rm -it app sh
+    - docker compose run --rm -it app sh
 
   console:
     desc: Open Python console in Docker container
@@ -199,4 +199,4 @@ tasks:
     env:
       PYTHONPATH: /app:/app/src
     cmds:
-      - docker compose run --rm -it app uv run python scripts/console.py
+    - docker compose run --rm -it app uv run python scripts/console.py
